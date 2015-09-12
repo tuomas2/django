@@ -48,6 +48,15 @@ You'll need to :ref:`adapt old, custom middleware <upgrading-middleware>` and
 switch from the ``MIDDLEWARE_CLASSES`` setting to the new :setting:`MIDDLEWARE`
 setting to take advantage of the improvements.
 
+Template-based widget rendering
+-------------------------------
+
+To ease customizing widgets, form widget rendering is now done using the
+template system rather than in Python. See :doc:`/ref/forms/renderers`.
+
+You may need to adjust any custom widgets that you've written for a few
+:ref:`backwards incompatible changes <template-widget-incompatibilities-1-10>`.
+
 Official support for Unicode usernames
 --------------------------------------
 
@@ -779,6 +788,21 @@ Two new settings help mitigate denial-of-service attacks via large requests:
 Applications that receive unusually large form posts may need to tune these
 settings.
 
+.. _template-widget-incompatibilities-1-10:
+
+Changes due to the introduction of template-based widget rendering
+------------------------------------------------------------------
+
+Some undocumented classes in ``django.forms.widgets`` are removed:
+
+* ``SubWidget``
+* ``RendererMixin``, ``ChoiceFieldRenderer``, ``RadioFieldRenderer``,
+  ``CheckboxFieldRenderer``
+* ``ChoiceInput``, ``RadioChoiceInput``, ``CheckboxChoiceInput``
+
+The ``Widget.format_output()`` method is removed. Use a custom widget template
+instead.
+
 Miscellaneous
 -------------
 
@@ -1145,6 +1169,10 @@ Miscellaneous
 * Old-style middleware that uses  ``settings.MIDDLEWARE_CLASSES`` are
   deprecated. :ref:`Adapt old, custom middleware <upgrading-middleware>` and
   use the new :setting:`MIDDLEWARE` setting.
+
+* The ``renderer`` argument is added to the :meth:`Widget.render()
+  <django.forms.Widget.render>` method. Methods that don't accept that argument
+  will work through a deprecation period.
 
 .. _removed-features-1.10:
 
