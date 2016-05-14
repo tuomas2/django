@@ -4,6 +4,7 @@ from django import forms
 from django.template import TemplateDoesNotExist
 from django.template.backends.django import DjangoTemplates
 from django.template.loader import get_template
+from django.utils._os import upath
 from django.utils.functional import cached_property
 
 try:
@@ -11,7 +12,7 @@ try:
 except ImportError:
     jinja2 = None
 
-ROOT = os.path.dirname(forms.__file__)
+ROOT = upath(os.path.dirname(forms.__file__))
 
 
 class StandaloneTemplateRenderer(object):
